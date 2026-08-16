@@ -36,6 +36,14 @@ if(CONFIG_ARCH_BUTTONS)
   list(APPEND SRCS esp32c3_buttons.c)
 endif()
 
+if(CONFIG_LCD_ST7789)
+  list(APPEND SRCS esp32c3_st7789.c)
+endif()
+
+if(CONFIG_INPUT_FT5X06)
+  list(APPEND SRCS esp32c3_ft6336.c)
+endif()
+
 target_sources(board PRIVATE ${SRCS})
 
 # ##############################################################################

@@ -13,3 +13,15 @@ curl -s -L "https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases
 ~/espressif-workspace$ echo "export PATH=~/espressif-workspace/toolchain/riscv-none-elf-gcc/bin:$PATH" >> ~/.bashrc
 ~/espressif-workspace$ sudo usermod -aG dialout "$USER"
 ```
+
+```sh
+~/espressif-workspace$
+cmake --build \
+  ~/espressif-workspace/nuttx/build-esp32c3-devkit \
+  -t menuconfig
+
+~/espressif-workspace$
+cmake --build \
+  ~/espressif-workspace/nuttx/build-esp32c3-devkit \
+  -t savedefconfig
+```

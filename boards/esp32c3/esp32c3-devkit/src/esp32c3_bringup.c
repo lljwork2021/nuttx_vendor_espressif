@@ -36,6 +36,14 @@
 
 #include <nuttx/fs/fs.h>
 
+#ifdef CONFIG_LCD
+#  include <nuttx/board.h>
+#endif
+
+#ifdef CONFIG_LCD_DEV
+#  include <nuttx/lcd/lcd_dev.h>
+#endif
+
 #include "esp_board_ledc.h"
 #include "esp_board_spiflash.h"
 #include "esp_board_i2c.h"
@@ -285,6 +293,25 @@ int esp_bringup(void)
 #  endif /* CONFIG_ESPRESSIF_SPI_BITBANG */
 #endif /* CONFIG_ESPRESSIF_SPI */
 
+#ifdef CONFIG_LCD
+  ret = board_lcd_initialize();
+  if (ret < 0)
+    {
+      syslog(LOG_ERR, "ERROR: Failed to initialize LCD: %d\n", ret);
+    }
+#  ifdef CONFIG_LCD_DEV
+  else
+    {
+      ret = lcddev_register(0);
+      if (ret < 0)
+        {
+          syslog(LOG_ERR, "ERROR: Failed to register /dev/lcd0: %d\n",
+                 ret);
+        }
+    }
+#  endif
+#endif
+
 #if defined(CONFIG_ESPRESSIF_SPI) && defined(CONFIG_MMCSD_SPI)
   ret = esp_mmcsd_spi_initialize();
   if (ret < 0)
@@ -393,6 +420,15 @@ int esp_bringup(void)
   if (ret < 0)
     {
       syslog(LOG_ERR, "Failed to initialize I2C driver: %d\n", ret);
+    }
+#endif
+
+#ifdef CONFIG_INPUT_FT5X06
+  ret = esp32c3_ft6336_initialize();
+  if (ret < 0)
+    {
+      syslog(LOG_ERR, "Failed to initialize FT6336 touchscreen: %d\n",
+             ret);
     }
 #endif
 

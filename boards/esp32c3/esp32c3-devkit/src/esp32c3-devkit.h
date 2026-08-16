@@ -114,5 +114,17 @@ int board_twai_setup(void);
 int esp_gpio_init(void);
 #endif
 
+/****************************************************************************
+ * Name: esp32c3_ft6336_initialize
+ *
+ * Description:
+ *   Initialize the FT6336 touchscreen and register /dev/input0.
+ *
+ ****************************************************************************/
+
+#ifdef CONFIG_INPUT_FT5X06
+int esp32c3_ft6336_initialize(void);
+#endif
+
 #endif /* __ASSEMBLY__ */
 #endif /* __BOARDS_RISCV_ESP32C3_ESP32C3_DEVKIT_SRC_ESP32C3_DEVKIT_H */
