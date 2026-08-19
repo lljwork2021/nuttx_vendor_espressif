@@ -8,4 +8,4 @@
 # NOTE: Kconfiglib resolves relative "source" paths against $srctree (the
 # working directory), not against this file, so absolute paths are required.
 #
-# (no custom applications currently; placeholder for out-of-tree apps)
+source "/home/user/espressif-workspace/nuttx_vendor_espressif/apps/apptest/Kconfig"

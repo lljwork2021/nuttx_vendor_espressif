@@ -1,0 +1,25 @@
+#
+# For a description of the syntax of this configuration file,
+# see the file kconfig-language.txt in the NuttX tools repository.
+#
+
+menuconfig APPTEST
+	tristate "LVGL Sensor Monitor GUI"
+	default y
+	depends on GRAPHICS_LVGL
+	---help---
+		Real-time sensor monitor GUI showing QMI8658 (accel/gyro),
+		QMC5883L (magnetometer) and GXHTC3 (temperature/humidity)
+		data via the NuttX uORB sensor framework.
+
+if APPTEST
+
+config APPTEST_PRIORITY
+	int "apptest task priority"
+	default 100
+
+config APPTEST_STACKSIZE
+	int "apptest task stack size"
+	default 16384
+
+endif # APPTEST

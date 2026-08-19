@@ -4,6 +4,19 @@ Espressif chip support for NuttX
 ![image01](docs/images/image01.png)
 
 ```sh
+~/espressif-workspace$ tree -L 1
+.
+├── apps
+├── build.sh
+├── nuttx
+├── nuttx_vendor_espressif
+├── output
+└── toolchain
+
+5 directories, 1 file
+```
+
+```sh
 ~$ mkdir espressif-workspace
 ~$ cd espressif-workspace/
 ~/espressif-workspace$ git clone https://github.com/lljwork2021/nuttx_vendor_espressif.git

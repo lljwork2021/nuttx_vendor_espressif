@@ -13,4 +13,5 @@
 #     `if(CONFIG_...)` guards below simply skip building)
 #   - apps:    actual build stage, CONFIG_* symbols are already exported
 # ##############################################################################
-# (no custom applications currently; placeholder for out-of-tree apps)
+
+add_subdirectory(apptest)
