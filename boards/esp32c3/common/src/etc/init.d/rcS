@@ -1,0 +1,11 @@
+/* This script "rcS" is executed after the rc.sysinit script.
+ * It should startup some application and other system service.
+ */
+
+echo "rcS file is called!"
+
+/* Start the LVGL sensor monitor GUI in the background.  NSH remains
+ * available on the serial console while the GUI runs.
+ */
+
+apptest &
