@@ -17,13 +17,12 @@
 #include <nuttx/input/ft5x06.h>
 #include <nuttx/input/touchscreen.h>
 
-#include "espressif/esp_i2c.h"
+#include "espressif/esp_i2c_bitbang.h"
 
 /****************************************************************************
  * Pre-processor Definitions
  ****************************************************************************/
 
-#define FT6336_I2C_PORT      ESPRESSIF_I2C0
 #define FT6336_I2C_ADDRESS   0x38
 #define FT6336_I2C_FREQUENCY 400000
 
@@ -56,7 +55,7 @@ int esp32c3_ft6336_initialize(void)
   FAR struct i2c_master_s *i2c;
   int ret;
 
-  i2c = esp_i2cbus_initialize(FT6336_I2C_PORT);
+  i2c = esp_i2cbus_bitbang_initialize();
   if (i2c == NULL)
     {
       i2cerr("ERROR: Failed to initialize FT6336 I2C bus\n");
@@ -67,7 +66,6 @@ int esp32c3_ft6336_initialize(void)
   if (ret < 0)
     {
       i2cerr("ERROR: Failed to register FT6336: %d\n", ret);
-      esp_i2cbus_uninitialize(i2c);
     }
 
   return ret;

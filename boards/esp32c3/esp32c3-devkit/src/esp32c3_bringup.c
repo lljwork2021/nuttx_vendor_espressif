@@ -49,6 +49,22 @@
 #include "esp_board_i2c.h"
 #include "esp_board_bmp180.h"
 
+#ifdef CONFIG_SENSORS_QMI8658
+#  include <nuttx/sensors/qmi8658.h>
+#endif
+
+#ifdef CONFIG_SENSORS_QMC5883L
+#  include <nuttx/sensors/qmc5883l.h>
+#endif
+
+#ifdef CONFIG_SENSORS_GXHTC3
+#  include <nuttx/sensors/gxhtc3.h>
+#endif
+
+#ifdef CONFIG_ESPRESSIF_I2C_BITBANG
+#  include "espressif/esp_i2c_bitbang.h"
+#endif
+
 #ifdef CONFIG_DEV_RNG90
 #  include "esp_board_rng90.h"
 #endif
@@ -430,6 +446,44 @@ int esp_bringup(void)
       syslog(LOG_ERR, "Failed to initialize FT6336 touchscreen: %d\n",
              ret);
     }
+#endif
+
+#if defined(CONFIG_SENSORS_QMI8658) || defined(CONFIG_SENSORS_QMC5883L) || \
+    defined(CONFIG_SENSORS_GXHTC3)
+  {
+    FAR struct i2c_master_s *i2c = esp_i2cbus_bitbang_initialize();
+
+    if (i2c == NULL)
+      {
+        syslog(LOG_ERR, "Failed to get I2C bus for sensors\n");
+      }
+    else
+      {
+#  ifdef CONFIG_SENSORS_QMI8658
+        ret = qmi8658_uorb_register(0, i2c, 0x6a);
+        if (ret < 0)
+          {
+            syslog(LOG_ERR, "Failed to register QMI8658 IMU: %d\n", ret);
+          }
+#  endif
+
+#  ifdef CONFIG_SENSORS_QMC5883L
+        ret = qmc5883l_register(i2c, 0);
+        if (ret < 0)
+          {
+            syslog(LOG_ERR, "Failed to register QMC5883L: %d\n", ret);
+          }
+#  endif
+
+#  ifdef CONFIG_SENSORS_GXHTC3
+        ret = gxhtc3_register(i2c, 0);
+        if (ret < 0)
+          {
+            syslog(LOG_ERR, "Failed to register GXHTC3: %d\n", ret);
+          }
+#  endif
+      }
+  }
 #endif
 
 #ifdef CONFIG_SENSORS_BMP180

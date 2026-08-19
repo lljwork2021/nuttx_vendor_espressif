@@ -9,11 +9,27 @@ config="$workspace/nuttx_vendor_espressif/boards/esp32c3/esp32c3-devkit/configs/
 output="$workspace/output"
 port="${ESPTOOL_PORT:-/dev/ttyACM0}"
 
+apply_patches()
+{
+  patches_dir="$workspace/nuttx_vendor_espressif/patches"
+  [ -d "$patches_dir" ] || { echo "-- no patches directory, skip"; return; }
+  for target in nuttx apps; do
+    src="$patches_dir/$target"
+    [ -d "$src" ] || continue
+    cp -r "$src/." "$workspace/$target/"
+    echo "-- applied $(find "$src" -type f | wc -l) patch file(s) to $target/"
+  done
+}
+
 build_firmware()
 {
+  echo "-- applying patches before build"
+  apply_patches
+
   [ -f "$nuttx/.config" ] && make -C "$nuttx" distclean
   rm -f "$build/CMakeCache.txt"
   rm -rf "$build/CMakeFiles"
+  rm -rf "$build/apps"
 
   cmake \
     -S "$nuttx" \

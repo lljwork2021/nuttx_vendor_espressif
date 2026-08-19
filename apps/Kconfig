@@ -1,0 +1,11 @@
+#
+# Custom applications from the nuttx_vendor_espressif/apps directory.
+#
+# This file is referenced by the generated root apps Kconfig through
+# nuttx_generate_kconfig(EXTERNAL_DIRECTORIES <apps>), so the symbols
+# defined here are visible to menuconfig and olddefconfig.
+#
+# NOTE: Kconfiglib resolves relative "source" paths against $srctree (the
+# working directory), not against this file, so absolute paths are required.
+#
+# (no custom applications currently; placeholder for out-of-tree apps)
